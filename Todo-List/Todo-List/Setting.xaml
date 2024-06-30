@@ -1,0 +1,56 @@
+﻿<Window x:Class="Todo_List.Setting"
+        Style="{StaticResource MaterialDesignWindow}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Todo_List"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:viewModels="clr-namespace:Todo_List.ViewModels"
+        mc:Ignorable="d"
+        Title="Settings" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModels:SettingsViewModel />
+    </Window.DataContext>
+    <Grid Margin="20">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
+            <TextBlock Text="Settings" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20" />
+
+            <CheckBox Content="Save log into file" 
+                      IsChecked="{Binding SaveLogToFile, Mode=TwoWay}" 
+                      Margin="0,10" 
+                      Style="{StaticResource MaterialDesignCheckBox}"/>
+
+            <CheckBox Content="Debug Mode" 
+                      IsChecked="{Binding IsDebugMode, Mode=TwoWay}" 
+                      Margin="0,10" 
+                      Style="{StaticResource MaterialDesignCheckBox}"/>
+            
+            <CheckBox Content="Can Drag DesktopView Window" 
+                      IsChecked="{Binding CanDrag, Mode=TwoWay}" 
+                      Margin="0,10" 
+                      Style="{StaticResource MaterialDesignCheckBox}"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Log Level: " 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,10,0" 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}" />
+                <ComboBox Width="200" 
+                          ItemsSource="{Binding LogModes}" 
+                          SelectedItem="{Binding SelectedLogMode, Mode=TwoWay}" 
+                          Style="{StaticResource MaterialDesignComboBox}">
+                </ComboBox>
+            </StackPanel>
+
+            <Button Content="Save and Exit" 
+                    Command="{Binding SaveCommand}" 
+                    Style="{StaticResource MaterialDesignRaisedButton}" 
+                    Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

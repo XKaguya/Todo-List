@@ -1,0 +1,34 @@
+﻿<Window x:Class="Todo_List.DesktopView"
+        Style="{StaticResource MaterialDesignWindow}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Todo_List"
+        mc:Ignorable="d"
+        Title="DesktopView" Height="450" Width="600"
+        Topmost="True"
+        AllowsTransparency="True"
+        Background="Gray"
+        WindowStyle="None"
+        Opacity="0.8"
+        MouseLeftButtonDown="OnMouseLeftButtonDown">
+    <Grid Background="Gray" Opacity="0.8" Name="Grid" IsHitTestVisible="False">
+        <ScrollViewer Name="ScrollViewer" VerticalScrollBarVisibility="Auto" IsHitTestVisible="False">
+            <ListBox ItemsSource="{Binding ToDoItems}"
+                     IsHitTestVisible="False">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="5" Margin="5" BorderBrush="Gray" BorderThickness="1" Background="{Binding Color}">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" IsEnabled="False" Foreground="White"/>
+                                <TextBox Text="{Binding Name}" Width="200" Margin="5,0" VerticalAlignment="Center" IsReadOnly="True" Foreground="White"/>
+                                <TextBox Text="{Binding Description}" Width="300" Margin="5,0" VerticalAlignment="Center" IsReadOnly="True" Foreground="White"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+    </Grid>
+</Window>
