@@ -9,4 +9,4 @@ Todo List. Used to check what should do next.
 * Support load exported todo list.
 * A Top window that shows todo list same with the main window.
 
-   By switching 'Can Drag DesktopView Window', You're allow to drag the window to anyplace that you like.
+   By switching ``Can Drag DesktopView Window``, You're allow to drag the window to anyplace that you like.
