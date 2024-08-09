@@ -13,7 +13,7 @@
         WindowStyle="None"
         Opacity="0.8"
         MouseLeftButtonDown="OnMouseLeftButtonDown">
-    <Grid Background="Gray" Opacity="0.8" Name="Grid" IsHitTestVisible="False">
+    <Grid Background="Gray" Name="Grid" IsHitTestVisible="False">
         <ScrollViewer Name="ScrollViewer" VerticalScrollBarVisibility="Auto" IsHitTestVisible="False">
             <ListBox ItemsSource="{Binding ToDoItems}"
                      IsHitTestVisible="False">

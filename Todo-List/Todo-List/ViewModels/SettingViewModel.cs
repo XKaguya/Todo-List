@@ -14,7 +14,9 @@ namespace Todo_List.ViewModels
         private bool _saveLogToFile;
         private bool _isDebugMode;
         private bool _canDrag;
+        private bool _autoUpdate;
         private string _selectedLogMode;
+        private double _selectedOpacity = 0.8;
         private ObservableCollection<string> _logModes;
         private Settings _settings;
 
@@ -42,10 +44,24 @@ namespace Todo_List.ViewModels
                     bool isWriteEnabled = Generic.Log.SetIsWrite(_saveLogToFile);
                     if (isWriteEnabled)
                     {
-                        Generic.Log.Info( "Log will now write into file.", false);
+                        Generic.Log.Info( "Log will now write into file.");
                     }
                     
                     OnPropertyChanged(nameof(SaveLogToFile));
+                }
+            }
+        }
+        
+        public double SelectedOpacity
+        {
+            get => _selectedOpacity;
+            set
+            {
+                if (_selectedOpacity != value)
+                {
+                    _selectedOpacity = value;
+                    DesktopView.Instance.Opacity = _selectedOpacity;
+                    OnPropertyChanged(nameof(SelectedOpacity));
                 }
             }
         }
@@ -59,6 +75,19 @@ namespace Todo_List.ViewModels
                 {
                     _isDebugMode = value;
                     OnPropertyChanged(nameof(IsDebugMode));
+                }
+            }
+        }
+        
+        public bool AutoUpdate
+        {
+            get { return _autoUpdate; }
+            set
+            {
+                if (_autoUpdate != value)
+                {
+                    _autoUpdate = value;
+                    OnPropertyChanged(nameof(AutoUpdate));
                 }
             }
         }
@@ -171,11 +200,15 @@ namespace Todo_List.ViewModels
             }
             
             SaveLogToFile = Settings.SaveLogIntoFile;
+            SelectedOpacity = Settings.SelectedOpacity;
+            AutoUpdate = Settings.AutoUpdate;
             IsDebugMode = Settings.IsDebugMode;
             CanDrag = Settings.CanDrag;
             SelectedLogMode = Settings.LogLevel.ToString();
+
+            MainWindow.IsAutoUpdate = AutoUpdate;
             
-            Generic.Log.Debug($"Loaded {Settings.SaveLogIntoFile}, {Settings.IsDebugMode}, {Settings.LogLevel.ToString()}");
+            Generic.Log.Debug($"Loaded {Settings.SaveLogIntoFile}, {Settings.AutoUpdate}, {Settings.IsDebugMode}, {Settings.LogLevel.ToString()}");
         }
 
         private void SaveSettings()
@@ -185,6 +218,8 @@ namespace Todo_List.ViewModels
                 Generic.Log.Info("Attempting to save settings...");
                 
                 Settings.SaveLogIntoFile = SaveLogToFile;
+                Settings.SelectedOpacity = SelectedOpacity;
+                Settings.AutoUpdate = AutoUpdate;
                 Settings.IsDebugMode = IsDebugMode;
                 Settings.CanDrag = CanDrag;
                 Settings.LogLevel = Enum.TryParse<LogLevel>(SelectedLogMode, out var logLevel) ? logLevel : LogLevel.Info;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using Microsoft.Win32;
 using Todo_List.Class;
 using Todo_List.Generic;
 
@@ -33,6 +34,8 @@ namespace Todo_List.ViewModels
         public ICommand AddCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ExportCommand { get; set; }
+        
+        public ICommand LoadCommand { get; set; }
 
         public MainViewModel()
         {
@@ -40,6 +43,7 @@ namespace Todo_List.ViewModels
             AddCommand = new RelayCommand(AddToDo);
             DeleteCommand = new RelayCommand(DeleteSelectedToDo);
             ExportCommand = new RelayCommand(ExportToXml);
+            LoadCommand = new RelayCommand(LoadFromXml);
 
             LoadToDoItems();
         }
@@ -134,6 +138,50 @@ namespace Todo_List.ViewModels
                         ToDoItems.Add(item);
                         item.PropertyChanged += OnPropertyChanged!;
                     }
+
+                    return;
+                }
+
+                Generic.Log.Info("File not exist. Load failed.");
+            }
+            catch (Exception ex)
+            {
+                Color = Brushes.Red;
+                Message = ex.Message;
+            }
+        }
+        
+        private void LoadFromXml()
+        {
+            Message = string.Empty;
+
+            try
+            {
+                var serializer = new XmlSerializer(typeof(ObservableCollection<ToDo>));
+                
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Filter = "XML File (*.xml)|*.xml",
+                    Title = "Choose XML File"
+                };
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string filePath = openFileDialog.FileName;
+                    
+                    using var reader = new StreamReader(filePath);
+
+                    var items = (ObservableCollection<ToDo>)serializer.Deserialize(reader);
+                    ToDoItems.Clear();
+
+                    foreach (var item in items)
+                    {
+                        ToDoItems.Add(item);
+                        item.PropertyChanged += OnPropertyChanged!;
+                    }
+                    
+                    Color = Brushes.LightSeaGreen;
+                    Message = "Load successful.";
 
                     return;
                 }

@@ -21,6 +21,7 @@
             <Button Content="Add" Command="{Binding AddCommand}" Margin="5"/>
             <Button Content="Delete" Command="{Binding DeleteCommand}" Margin="5"/>
             <Button Content="Export" Command="{Binding ExportCommand}" Margin="5"/>
+            <Button Content="Load" Command="{Binding LoadCommand}" Margin="5"/>
             <Button Content="Log" Click="LogClick" Margin="5"/>
             <Button Content="Setting" Click="SettingClick" Margin="5"/>
             <Button Content="Desktop Viewer" Click="DeskViewClick" Margin="5"/>

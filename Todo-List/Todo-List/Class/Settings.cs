@@ -6,6 +6,10 @@ namespace Todo_List.Class
     {
         public bool SaveLogIntoFile { get; set; }
         
+        public double SelectedOpacity { get; set; }
+        
+        public bool AutoUpdate { get; set; }
+        
         public bool IsDebugMode { get; set; }
         
         public bool CanDrag { get; set; }

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Todo_List.Class;
-using Todo_List.Enums;
 using Todo_List.ExternFeature;
-using Todo_List.Generic;
 using Todo_List.ViewModels;
 
 namespace Todo_List
@@ -20,9 +16,11 @@ namespace Todo_List
     {
         private Point _dragStartPoint;
         
+        public static bool IsAutoUpdate { get; set; }
+        
         private static object DataContextInstance { get; set; }
 
-        private static string Version { get; } = "1.0.0";
+        public static string Version { get; } = "1.0.0";
         
         public MainWindow()
         {
@@ -38,11 +36,15 @@ namespace Todo_List
             Log.Instance.Hide();
             
             Generic.Log.ClearLog();
+            
             Generic.Log.Info($"Program started. Version {Version}.");
             
             DesktopView.Instance.Hide();
             DesktopView.Instance.DataContext = DataContextInstance;
             Setting.Instance.Hide();
+            DesktopView.Instance.Opacity = Setting.Instance.Opacity;
+            
+            AutoUpdate.CheckAndUpdate();
         }
         
         private void SelectionPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs ev)

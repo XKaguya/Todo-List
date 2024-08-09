@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -117,7 +118,7 @@ namespace Todo_List.Generic
             LogTextBox.ScrollToEnd();
         }
 
-        private static bool LogEntry(LogLevel logLevel, string line, bool showSrc)
+        private static bool LogEntry(LogLevel logLevel, string line, string callerName = "")
         {
             if (LogLevel >= logLevel)
             {
@@ -130,9 +131,7 @@ namespace Todo_List.Generic
                             ClearLog();
                         }
 
-                        string logMessage = showSrc
-                            ? $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{GetCallerName()}] [{Enum.GetName(typeof(LogLevel), logLevel)}]: {line}"
-                            : $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{Enum.GetName(typeof(LogLevel), logLevel)}]: {line}";
+                        string logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{callerName}] [{Enum.GetName(typeof(LogLevel), logLevel)}]: {line}";
 
                         if (string.IsNullOrEmpty(logMessage))
                         {
@@ -154,69 +153,34 @@ namespace Todo_List.Generic
             return false;
         }
 
-        public static void Info(string message, bool showSrc = true)
+        public static void Info(string message, [CallerMemberName] string callerName = "")
         {
-            LogEntry(LogLevel.Info, message, showSrc);
+            LogEntry(LogLevel.Info, message, callerName);
         }
 
-        public static void Error(string message, bool showSrc = true)
+        public static void Error(string message, [CallerMemberName] string callerName = "")
         {
-            LogEntry(LogLevel.Error, message, showSrc);
+            LogEntry(LogLevel.Error, message, callerName);
         }
 
-        public static void Debug(string message, bool showSrc = true)
+        public static void Debug(string message, [CallerMemberName] string callerName = "")
         {
-            LogEntry(LogLevel.Debug, message, showSrc);
+            LogEntry(LogLevel.Debug, message, callerName);
         }
 
-        public static void Fatal(string message, bool showSrc = true)
+        public static void Fatal(string message, [CallerMemberName] string callerName = "")
         {
-            LogEntry(LogLevel.Fatal, message, showSrc);
+            LogEntry(LogLevel.Fatal, message, callerName);
         }
 
-        public static void Trace(string message, bool showSrc = true)
+        public static void Trace(string message, [CallerMemberName] string callerName = "")
         {
-            LogEntry(LogLevel.Trace, message, showSrc);
+            LogEntry(LogLevel.Trace, message, callerName);
         }
 
         public static void SetLogTarget(RichTextBox richTextBox)
         {
             LogTextBox = richTextBox;
-        }
-
-        private static string GetCallerName()
-        {
-            MethodBase currentMethod = MethodBase.GetCurrentMethod();
-            int frameCount = 0;
-
-            while (true)
-            {
-                frameCount++;
-
-                StackFrame callerFrame = new StackFrame(frameCount);
-                MethodBase callerMethod = callerFrame.GetMethod();
-
-                if (callerMethod == null || callerMethod.DeclaringType == null)
-                {
-                    return "Unknown Caller";
-                }
-
-                if (callerMethod.DeclaringType.Name == currentMethod.DeclaringType.Name || callerMethod.DeclaringType.Namespace != "Todo_List")
-                {
-                    continue;
-                }
-                else
-                {
-                    if (callerMethod.Name == "MoveNext" || callerMethod.Name == ".ctor")
-                    {
-                        string cleanMethodName = Regex.Replace(callerMethod.DeclaringType.Name, @"^<(\w+)>.*$", "$1");
-
-                        return cleanMethodName;
-                    }
-
-                    return callerMethod.Name;
-                }
-            }
         }
     }
 }

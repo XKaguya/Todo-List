@@ -12,7 +12,7 @@ public partial class DesktopView : Window
     
     public static ScrollViewer ScrollViewerInstance { get; set; }
     
-    private static DesktopView? _instance;
+    private static DesktopView?_instance;
 
     public static DesktopView Instance
     {
